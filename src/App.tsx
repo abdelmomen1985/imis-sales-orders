@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Button, Layout } from "antd";
+import ProductsList from "./components/products/ProductsList";
+import Footer from "./layout/Footer";
+import Header from "./layout/Header";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import ProductPage from "./views/ProductPage";
+import HomePage from "./views/HomePage";
+import CartPage from "./views/CartPage";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Layout>
+          <Layout.Header>
+            <Header />
+          </Layout.Header>
+          <Layout.Content className="layout-content">
+            <Switch>
+              <Route path="/" exact component={HomePage} />
+
+              <Route path="/product/:guid" component={ProductPage} />
+              <Route path="/cart" component={CartPage} />
+            </Switch>
+          </Layout.Content>
+          <Layout.Footer>
+            <Footer />
+          </Layout.Footer>
+        </Layout>
+      </Router>
+    </>
   );
 }
-
-export default App;
