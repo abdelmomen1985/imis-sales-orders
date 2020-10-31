@@ -33,43 +33,41 @@ export default function ProductElementEntry({
     let specDet = specDetails.find((specDet) => specDet.GUID === optGUID);
     onChangeValue(optGUID, specDet?.ArabicDescription);
   };
-
+  //           rules={[{ required: +spec.InputType === 1 , type: +spec.InputType === 1 ? "number": undefined}]}
   return (
     <>
       <div className="ppage-form-item">
-        <Card>
-          <h3 style={{ display: "inline-block" }}>{spec.ArabicDescription}</h3>{" "}
-          {spec.UnitId === "01001-AD06DE17-6E8E-4B82-9F0F-401ED621A888" && (
-            <span> (سـم) </span>
+        <h3 style={{ display: "inline-block" }}>{spec.ArabicDescription}</h3>{" "}
+        {spec.UnitId === "01001-AD06DE17-6E8E-4B82-9F0F-401ED621A888" && (
+          <span> (سـم) </span>
+        )}
+        <Form.Item name={spec.GUID}>
+          {+spec.InputType === 1 && (
+            <Input
+              onChange={(e) => {
+                onChangeValue(e.target.value);
+              }}
+            />
           )}
-          <Form.Item name={spec.GUID}>
-            {+spec.InputType === 1 && (
-              <Input
-                onChange={(e) => {
-                  onChangeValue(e.target.value);
-                }}
-              />
-            )}
-            {+spec.InputType === 2 && (
-              <Tooltip
-                trigger={["focus"]}
-                title={`الحد الادني ${+spec.MinValue} , الحد الاعلي ${+spec.MaxValue}`}
-                placement="topRight"
-              >
-                <InputNumber onChange={onChangeElement} />
-              </Tooltip>
-            )}
-            {+spec.InputType === 3 && (
-              <Select onChange={onSelectOption}>
-                {specDetails.map((detail) => (
-                  <Select.Option key={detail.GUID} value={detail.GUID}>
-                    {detail.ArabicDescription}
-                  </Select.Option>
-                ))}
-              </Select>
-            )}
-          </Form.Item>
-        </Card>
+          {+spec.InputType === 2 && (
+            <Tooltip
+              trigger={["focus"]}
+              title={`الحد الادني ${+spec.MinValue} , الحد الاعلي ${+spec.MaxValue}`}
+              placement="topRight"
+            >
+              <InputNumber onChange={onChangeElement} />
+            </Tooltip>
+          )}
+          {+spec.InputType === 3 && (
+            <Select onChange={onSelectOption}>
+              {specDetails.map((detail) => (
+                <Select.Option key={detail.GUID} value={detail.GUID}>
+                  {detail.ArabicDescription}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
+        </Form.Item>
       </div>
     </>
   );

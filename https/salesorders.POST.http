@@ -1,0 +1,6 @@
+POST http://20.36.212.104:8080/imisback/public/api/imis/salesorders
+Content-Type: "application/json"
+
+{
+  "CustomerID" : "01001-6AED1272-5C49-45A9-8EC4-0E6F016C75C5"
+}

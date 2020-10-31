@@ -23,14 +23,18 @@ export default function ProductsList(props: ProductsListProps) {
   }, []);
   return (
     <>
-      <Row gutter={[16, 16]}>
-        {products &&
-          products.map((product: ProductType) => (
-            <Col md={6} xs={24} key={product.GUID}>
-              <ProductCard onRefreshMe={() => {}} product={product} />
-            </Col>
-          ))}
-      </Row>
+      {products.length > 0 && (
+        <>
+          <h2>أمر بيع جديد</h2>
+          <Row gutter={[16, 16]}>
+            {products.map((product: ProductType) => (
+              <Col md={6} xs={24} key={product.GUID}>
+                <ProductCard onRefreshMe={() => {}} product={product} />
+              </Col>
+            ))}
+          </Row>
+        </>
+      )}
     </>
   );
 }

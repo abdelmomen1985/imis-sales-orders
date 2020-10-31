@@ -1,0 +1,6 @@
+GET http://20.36.212.104:8080/imisback/public/api/imis/item
+Content-Type: application/json
+
+{
+  "GUID":"01001-628A242C-5757-427C-8DD6-4A32A9AC935B"
+}

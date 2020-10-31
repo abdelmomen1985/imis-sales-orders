@@ -7,18 +7,24 @@ interface ProjectCardProps {
   // onSelect: (product: ProductType) => void;
   onRefreshMe: () => void;
   product: ProductType;
+  hideButton?: boolean;
 }
 
-export default function ProductCard({ product }: ProjectCardProps) {
+export default function ProductCard({ hideButton, product }: ProjectCardProps) {
   return (
     <>
       <Card>
+        <img src={product.Img} alt="" style={{ width: "100%" }} />
         <h2 className="product-card-title">{product.ArabicDescription}</h2>
-        <Row justify="center">
-          <Button type="primary">
-            <Link to={`/product/${product.GUID}`}>اضافة الي امر البيع</Link>
-          </Button>
-        </Row>
+        {!hideButton && (
+          <Row justify="center">
+            <Button type="primary">
+              <Link to={`/product/${product.GUID}/so`}>
+                اضافة الي امر البيع
+              </Link>
+            </Button>
+          </Row>
+        )}
       </Card>
     </>
   );

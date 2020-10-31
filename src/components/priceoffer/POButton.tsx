@@ -3,18 +3,18 @@ import { Button, Card } from "antd";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../../context/AppContextProvider";
-import { SalesOrderType } from "../../types";
+import { PriceOfferType } from "../../types";
 
-const countQny = (salesOrder: SalesOrderType) => {
+const countQny = (priceOffer: PriceOfferType) => {
   let count = 0;
-  salesOrder?.details?.forEach((element) => {
+  priceOffer?.details?.forEach((element) => {
     count += element.count;
   });
   return count;
 };
-export default function SOButton() {
-  const { salesOrder } = useContext(AppContext);
-  let count = countQny(salesOrder);
+export default function POButton() {
+  const { priceOffer } = useContext(AppContext);
+  let count = countQny(priceOffer);
   return (
     <>
       <div
@@ -30,16 +30,17 @@ export default function SOButton() {
           icon={<ShoppingCartOutlined />}
           type="primary"
           size="large"
-          disabled={!(salesOrder?.details?.length > 0)}
+          className="so-button"
+          disabled={!(priceOffer?.details?.length > 0)}
         >
-          <Link to="/cart">
+          <Link to="/po-cart">
             <b
               style={{
                 fontSize: "1.1em",
-                color: salesOrder?.details?.length > 0 ? "white" : "#332211",
+                color: priceOffer?.details?.length > 0 ? "white" : "#332211",
               }}
             >
-              عرض امر البيع ({count})
+              عرض الاسعار ({count})
             </b>
           </Link>
         </Button>

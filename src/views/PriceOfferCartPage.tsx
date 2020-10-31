@@ -2,33 +2,35 @@ import { Button, Card, notification } from "antd";
 import Axios from "axios";
 import React, { useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import SoSqFooterButtons from "../components/SoSqFooterButtons";
 import config from "../Configs";
+import SoSqFooterButtons from "../components/SoSqFooterButtons";
 import { AppContext } from "../context/AppContextProvider";
 import { Post } from "../query/helpers";
-import { SalesOrderType, SoSqDetailsResponseType } from "../types";
+import { PriceOfferType, SoSqDetailsResponseType } from "../types";
 
-interface CartPageProps extends RouteComponentProps {}
+interface PriceOfferCartPageProps extends RouteComponentProps {}
 
-export default function CartPage({ history }: CartPageProps) {
-  const { salesOrder, setSalesOrder } = useContext(AppContext);
+export default function PriceOfferCartPage({
+  history,
+}: PriceOfferCartPageProps) {
+  const { priceOffer, setPriceOffer } = useContext(AppContext);
 
   const openNotification = () => {
     notification.open({
-      message: "تم تسجيل امر البيع بنجاح ",
-      description: "تم تسجيل امر البيع بنجاح سيتم تحويلك للشاشة الرئيسية",
+      message: "تم تسجيل عرض الاسعار بنجاح ",
+      description: "تم تسجيل عرض الاسعار بنجاح سيتم تحويلك الان ",
       onClick: () => {
         //console.log("Notification Clicked!");
       },
       duration: 2,
       onClose: () => {
-        history.push("/");
-        setSalesOrder({} as SalesOrderType);
+        history.push("/price-offers");
+        setPriceOffer({} as PriceOfferType);
       },
     });
   };
 
-  const submitSalesOrder = async () => {
+  const submitPriceOffer = async () => {
     // so_type: 01001-105C50CF-8CC5-4627-82B5-80DD3E660189
     // customer: 01001-D808105D-C2D1-450E-AB8F-446478FC7313
     // date: 2020-10-20
@@ -36,21 +38,21 @@ export default function CartPage({ history }: CartPageProps) {
     // rate: 1,
     // created by 1
     let [row] = await Post(
-      config.API_URL + "imis/salesorders",
+      config.API_URL + "imis/salesquotations",
       {
-        CustomerID: salesOrder.customer.GUID,
+        CustomerID: priceOffer.customer.GUID,
       },
       {}
     );
     console.log("%c Mo2Log  row.GUID", "background: #bada55", row.GUID);
-    const salesOrderID = row.GUID;
+    const priceOfferId = row.GUID;
 
     let axiosArray = [];
-    for (let index = 0; index < salesOrder.details.length; index++) {
-      let req = Axios.post(config.API_URL + "imis/salesorders/detail", {
-        HeadID: salesOrderID,
-        ItemID: salesOrder.details[index].product.GUID,
-        Qnt: salesOrder.details[index].count,
+    for (let index = 0; index < priceOffer.details.length; index++) {
+      let req = Axios.post(config.API_URL + "imis/salesquotations/detail", {
+        HeadID: priceOfferId,
+        ItemID: priceOffer.details[index].product.GUID,
+        Qnt: priceOffer.details[index].count,
         detailIndex: index,
       });
       axiosArray.push(req);
@@ -58,7 +60,6 @@ export default function CartPage({ history }: CartPageProps) {
     let res = await Axios.all(axiosArray);
     let respData = res.map((resp) => {
       const { detailIndex } = JSON.parse(resp?.config?.data);
-      //console.log(salesOrder.details[detailIndex]);
       return {
         GUID: resp?.data[0]?.GUID,
         detailIndex,
@@ -68,9 +69,9 @@ export default function CartPage({ history }: CartPageProps) {
     let specsReqArr: any[] = [];
     respData.forEach((item) => {
       let detailGUID = item.GUID;
-      salesOrder.details[item.detailIndex].specElements.forEach(
+      priceOffer.details[item.detailIndex].specElements.forEach(
         (singleSpec) => {
-          let req = Axios.post(config.API_URL + "imis/salesorders/spec", {
+          let req = Axios.post(config.API_URL + "imis/salesquotations/spec", {
             HeadID: detailGUID,
             ElementId: singleSpec.GUID,
             Value: singleSpec.valueLabel
@@ -98,28 +99,29 @@ export default function CartPage({ history }: CartPageProps) {
     console.log("%c Mo2Log detail_row ", "background: #bada55", detail_row);
    */
   };
-  const deleteSalesOrder = () => {
-    localStorage.removeItem("SALES_ORDER");
-    setSalesOrder({} as SalesOrderType);
+  const deletePriceOffer = () => {
+    localStorage.removeItem("PRICE_OFFER");
+    setPriceOffer({} as PriceOfferType);
     history.push("/");
   };
   const deleteDetialByIndex = (index: number) => {
-    salesOrder.details.splice(index, 1);
-    setSalesOrder(salesOrder);
+    priceOffer.details.splice(index, 1);
+    setPriceOffer(priceOffer);
   };
 
-  console.log("%c Mo2Log salesOrder ", "background: #bada55", salesOrder);
+  console.log("%c Mo2Log priceOffer ", "background: #bada55", priceOffer);
   return (
     <>
       <Card>
-        <h3>امر بيع لصالح {salesOrder.customer?.Name}</h3>
+        <h3>عرض اسعار لصالح {priceOffer.customer?.Name}</h3>
       </Card>
-      {salesOrder.details?.map((soDetail, index) => (
+      {priceOffer?.details?.map((offerDetail, index) => (
         <Card key={index}>
           <h3>
-            عدد: {soDetail.count} - صنف {soDetail.product?.ArabicDescription}
+            عدد: {offerDetail.count} - صنف{" "}
+            {offerDetail.product?.ArabicDescription}
           </h3>
-          {soDetail.specElements?.map((element) => (
+          {offerDetail.specElements?.map((element) => (
             <Card
               key={element.GUID}
               bodyStyle={{ padding: "16px" }}
@@ -151,10 +153,11 @@ export default function CartPage({ history }: CartPageProps) {
           </div>
         </Card>
       ))}
+
       <SoSqFooterButtons
-        onSubmit={submitSalesOrder}
-        onDelete={deleteSalesOrder}
-        sosq="so"
+        onSubmit={submitPriceOffer}
+        onDelete={deletePriceOffer}
+        sosq="sq"
       />
     </>
   );
