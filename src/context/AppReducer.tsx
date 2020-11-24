@@ -1,4 +1,4 @@
-import { stat } from "fs";
+
 import { StateType } from "./AppContextProvider";
 
 export const setStorageItems = (items: any[]) => {
@@ -21,6 +21,7 @@ export const ACTION_TYPES = {
   SET_CUSTOMER: "SET_CUSTOMER",
   SET_SALES_ORDER: "SET_SALES_ORDER",
   SET_PRICE_OFFER: "SET_PRICE_OFFER",
+  SET_SHOW_SIDER: "SET_SHOW_SIDER"
 };
 
 type Action = {
@@ -52,6 +53,9 @@ export const AppReducer = (state: StateType, action: Action) => {
     case ACTION_TYPES.SET_PRICE_OFFER: {
       setStorageSingleItem("PRICE_OFFER", action.payload);
       return { ...state, priceOffer: action.payload } as StateType;
+    }
+    case ACTION_TYPES.SET_SHOW_SIDER: {
+      return { ...state, showSider: action.payload } as StateType;
     }
     default:
       return state;

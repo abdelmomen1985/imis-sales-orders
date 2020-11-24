@@ -16,7 +16,7 @@ const contentStyle = {
 export default function ProductsCarousel() {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [currentProductGUID, setCurrentProductGUID] = useState("");
-  const carouselRef = useRef<Carousel>(null);
+  const carouselRef = useRef<any>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -42,9 +42,16 @@ export default function ProductsCarousel() {
             ref={carouselRef}
             autoplay
             afterChange={(slide) => {
-              let currentKey = (carouselRef.current?.props?.children as any[])[
-                slide
-              ]["key"];
+              let currentKey;
+              if (carouselRef.current.innerSlider) {
+                currentKey = (carouselRef.current?.innerSlider?.props
+                  ?.children as any[])[slide]["key"];
+              } else {
+                currentKey = (carouselRef.current?.props?.children as any[])[
+                  slide
+                ]["key"];
+              }
+
               setCurrentProductGUID(currentKey);
             }}
             dotPosition="top"

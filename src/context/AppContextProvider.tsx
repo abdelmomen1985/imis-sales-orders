@@ -8,9 +8,11 @@ export type StateType = {
   salesOrder: SalesOrderType;
   priceOffer: PriceOfferType;
   userLoggedIn: boolean;
+  showSider: boolean;
   setContextCustomer: (customer: CustomerType) => void;
   setSalesOrder: (salesOrder: SalesOrderType) => void;
   setPriceOffer: (priceOffer: PriceOfferType) => void;
+  setShowSider: (flag: boolean) => void;
   setLoggedInUser: (user: any) => void;
 };
 
@@ -18,10 +20,12 @@ interface AppContextProviderProps {
   children: ReactNode;
 }
 
-let storageCustomer = getStorageSingleItem("CONTEXT_CUSTOMER") as CustomerType;
-let salesOrder = getStorageSingleItem("SALES_ORDER") as SalesOrderType;
-let priceOffer = getStorageSingleItem("PRICE_OFFER") as PriceOfferType;
-let userLoggedIn = getStorageSingleItem("IS_USER_LOGGED_IN") ? true : false;
+const storageCustomer = getStorageSingleItem(
+  "CONTEXT_CUSTOMER"
+) as CustomerType;
+const salesOrder = getStorageSingleItem("SALES_ORDER") as SalesOrderType;
+const priceOffer = getStorageSingleItem("PRICE_OFFER") as PriceOfferType;
+const userLoggedIn = getStorageSingleItem("IS_USER_LOGGED_IN") ? true : false;
 
 const initialState = {
   lang: "ar",
@@ -29,7 +33,10 @@ const initialState = {
   userLoggedIn,
   salesOrder,
   priceOffer,
+  showSider: userLoggedIn,
 } as StateType;
+
+console.log("initialState ", initialState);
 
 export const AppContext = createContext<StateType>(initialState);
 
@@ -64,12 +71,20 @@ export const AppContextProvider = ({ children }: AppContextProviderProps) => {
     });
   };
 
+  const setShowSider = (flag: boolean) => {
+    dispatch({
+      type: ACTION_TYPES.SET_SHOW_SIDER,
+      payload: flag,
+    });
+  };
+
   const contextValues: StateType = {
     ...state,
     setContextCustomer,
     setSalesOrder,
     setLoggedInUser,
     setPriceOffer,
+    setShowSider,
   };
   return (
     <AppContext.Provider value={contextValues}>{children}</AppContext.Provider>
