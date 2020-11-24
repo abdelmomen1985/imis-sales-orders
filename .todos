@@ -5,4 +5,6 @@ Sales Order Types
 Currency dynamic
 UOMID,UomFactor  وحدة القياس 
 Get price dynamic
-Seperated Component Element for each Spec
+Seperated Component Element for each Spec 
+  - (https://ant.design/components/form/#components-form-demo-complex-form-control)
+  - https://github.com/ant-design/ant-design/issues/5790
