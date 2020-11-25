@@ -10,6 +10,7 @@ import {
 import { AnimatedSwitch, spring } from "react-router-transition";
 import { CSSTransition } from "react-transition-group";
 import logo from "./assets/images/alaqeel-logo.png";
+import logoCircle from "./assets/images/circle-logo.png";
 import { AppContext } from "./context/AppContextProvider";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
@@ -24,7 +25,14 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   HomeFilled,
+  TableOutlined,
+  FileDoneOutlined,
+  ClockCircleOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
+import { SalesIcon, CustomersIcon, DrawIcon } from "./components/icons";
+import CustomersPage from "./views/CustomersPage";
+
 function mapStyles(styles: any) {
   return {
     opacity: styles.opacity,
@@ -59,8 +67,16 @@ const bounceTransition = {
   },
 };
 
+const styles = {
+  menuItemStyle: {
+    textAlign: "right",
+    fontFamily: "Cairo",
+    fontSize: "1.1em",
+  } as React.CSSProperties,
+};
+
 export default function App() {
-  const { userLoggedIn, showSider } = useContext(AppContext);
+  const { userLoggedIn, showSider, setLoggedInUser } = useContext(AppContext);
   const [isLoggedIn, setIsLoggedIn] = useState(userLoggedIn);
   const [collapsed, setCollapsed] = useState(false);
   const [refresh, setRefresh] = useState(0);
@@ -102,7 +118,7 @@ export default function App() {
                   <Link to="/">
                     <CSSTransition in={inProp} timeout={700} classNames="logo">
                       <img
-                        src={logo}
+                        src={collapsed ? logoCircle : logo}
                         alt=""
                         style={{
                           maxWidth: "100%",
@@ -123,18 +139,123 @@ export default function App() {
                 </Button>
                 <div style={{ textAlign: "center" }}>
                   <Avatar
-                    size={collapsed ? 50 : 100}
-                    src="https://i.imgur.com/3fqRWdX.png"
+                    size={collapsed ? 40 : 80}
+                    src="https://i.imgur.com/W7WjRNt.png"
                   />
                   {!collapsed && (
-                    <Title style={{ fontSize: "1em", color: "#414141" }}>
-                      اسم المستخدم
+                    <Title
+                      style={{
+                        fontSize: "1em",
+                        color: "#414141",
+                        marginTop: ".5em",
+                      }}
+                    >
+                      محمد احمد عبدالعزيز
                     </Title>
                   )}
                 </div>
                 <Menu defaultSelectedKeys={["1"]} mode="inline">
-                  <Menu.Item key="1" icon={<HomeFilled />}>
-                    الرئيسية
+                  <Menu.Item
+                    key="1"
+                    icon={
+                      <HomeFilled
+                        className="menu-icon"
+                        style={{ margin: !collapsed ? "0 10px" : "" }}
+                      />
+                    }
+                    style={styles.menuItemStyle}
+                  >
+                    <Link to="/">الرئيسية</Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="2"
+                    icon={
+                      <CustomersIcon
+                        className="menu-icon"
+                        style={{ margin: !collapsed ? "0 10px" : "" }}
+                      />
+                    }
+                    style={styles.menuItemStyle}
+                  >
+                    <Link to="/customers">أدارة العملاء</Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="3"
+                    icon={
+                      <SalesIcon
+                        style={{ margin: !collapsed ? "0 10px" : "" }}
+                      />
+                    }
+                    style={styles.menuItemStyle}
+                  >
+                    <Link to="price-offers">أدارة المبيعات</Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="4"
+                    icon={
+                      <DrawIcon
+                        className="menu-icon"
+                        style={{ margin: !collapsed ? "0 10px" : "" }}
+                      />
+                    }
+                    style={styles.menuItemStyle}
+                  >
+                    اضافة رسم
+                  </Menu.Item>
+
+                  <Menu.Item
+                    key="5"
+                    icon={
+                      <TableOutlined
+                        className="menu-icon"
+                        style={{ margin: !collapsed ? "0 10px" : "" }}
+                      />
+                    }
+                    style={styles.menuItemStyle}
+                  >
+                    جدول الطلبات
+                  </Menu.Item>
+
+                  <Menu.Item
+                    key="6"
+                    icon={
+                      <FileDoneOutlined
+                        className="menu-icon"
+                        style={{ margin: !collapsed ? "0 10px" : "" }}
+                      />
+                    }
+                    style={styles.menuItemStyle}
+                  >
+                    تعليمات
+                  </Menu.Item>
+
+                  <Menu.Item
+                    key="7"
+                    icon={
+                      <ClockCircleOutlined
+                        className="menu-icon"
+                        style={{ margin: !collapsed ? "0 10px" : "" }}
+                      />
+                    }
+                    style={styles.menuItemStyle}
+                  >
+                    تتبع الوقت
+                  </Menu.Item>
+
+                  <Menu.Item
+                    key="8"
+                    icon={
+                      <LogoutOutlined
+                        className="menu-icon"
+                        style={{ margin: !collapsed ? "0 10px" : "" }}
+                      />
+                    }
+                    onClick={() => {
+                      setLoggedInUser(null);
+                    }}
+                    style={styles.menuItemStyle}
+                  >
+                    تسجيل الخروج
                   </Menu.Item>
                 </Menu>
               </div>
@@ -177,6 +298,7 @@ export default function App() {
                 <Route path="/price-offers" component={PriceOffers} />
                 <Route path="/sales-orders" component={SalesOrdersPage} />
                 <Route path="/login" component={LoginPage} />
+                <Route path="/customers" component={CustomersPage} />
               </AnimatedSwitch>
             </Layout.Content>
             <Layout.Footer>

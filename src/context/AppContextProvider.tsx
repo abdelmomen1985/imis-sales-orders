@@ -51,6 +51,7 @@ export const AppContextProvider = ({ children }: AppContextProviderProps) => {
   };
 
   const setLoggedInUser = (user: any) => {
+    setShowSider(false);
     dispatch({
       type: ACTION_TYPES.SET_USER_LOGGED_IN,
       payload: user ? true : false,

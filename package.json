@@ -17,6 +17,7 @@
     "@types/react-transition-group": "^4.4.0",
     "antd": "^4.7.0",
     "axios": "^0.20.0",
+    "bizcharts": "^4.0.15",
     "craco-less": "^1.17.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

@@ -22,12 +22,12 @@ export default function LoginPage(props: RouteComponentProps) {
     <>
       <Card
         style={{
-          margin: "30px 90px",
+          margin: "30px 190px",
           borderRadius: "5px",
           border: "1px solid #0000003D",
         }}
       >
-        <Title level={2} style={{ color: "#414141", marginRight: "40px" }}>
+        <Title level={3} style={{ color: "#414141", marginRight: "40px" }}>
           تسجيل الدخول
         </Title>
         <div style={{ marginRight: "40px", marginLeft: "40px" }}>
