@@ -13,7 +13,6 @@ export default function SelectCustomer() {
   const [defaultCustomerGUID, setDefaultCustomerGUID] = useState(
     contextCustomer?.GUID
   );
-  const [modalOpen, setModalOpen] = useState(false);
 
   const selectCustomer = (selectedCustGUID: string) => {
     console.log(
@@ -28,11 +27,6 @@ export default function SelectCustomer() {
     );
     console.log("%c Mo2Log customers ", "background: #bada55", customer!);
     setContextCustomer(customer!);
-  };
-
-  const customerSaved = () => {
-    fetchCustomers();
-    setModalOpen(false);
   };
 
   const fetchCustomers = async () => {
@@ -50,11 +44,6 @@ export default function SelectCustomer() {
 
   return (
     <>
-      <AddCustomerModal
-        visible={modalOpen}
-        onSave={customerSaved}
-        closeMe={() => setModalOpen(false)}
-      />
       <Card style={{ marginBottom: "1em" }}>
         <h3>اسم العميل</h3>
         <Form.Item>
@@ -70,11 +59,6 @@ export default function SelectCustomer() {
             ))}
           </Select>
         </Form.Item>
-        <div className="centered">
-          <Button type="primary" onClick={() => setModalOpen(true)}>
-            اضافة عميل جديد
-          </Button>
-        </div>
       </Card>
     </>
   );

@@ -1,6 +1,6 @@
 import { Button, Space, Table, Tag } from "antd";
 import React, { useState } from "react";
-import AddCustomerModal from "../components/customers/AddCustomerModal";
+
 const columns = [
   {
     title: "الاسم",
@@ -73,28 +73,10 @@ const data = [
     tags: ["cool", "teacher"],
   },
 ];
-export default function CustomersPage() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const customerSaved = () => {
-    //fetchCustomers();
-    setModalOpen(false);
-  };
+export default function SalesOrdersTable() {
   return (
     <div>
-      {/**
-      <SelectCustomer /> */}
-      <AddCustomerModal
-        visible={modalOpen}
-        onSave={customerSaved}
-        closeMe={() => setModalOpen(false)}
-      />
       <Table columns={columns} dataSource={data} />
-
-      <div className="centered">
-        <Button type="primary" onClick={() => setModalOpen(true)}>
-          اضافة عميل جديد
-        </Button>
-      </div>
     </div>
   );
 }

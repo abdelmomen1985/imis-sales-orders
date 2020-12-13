@@ -63,7 +63,7 @@
   background: #141414;
 }
 .layout-content {
-  margin: 1.5em;
+  margin: 1em;
 }
 .header-title {
   color: azure;
@@ -112,12 +112,12 @@
 @font-face {
   font-family: Cairo;
   font-weight: 400;
-  src: url(assets/fonts/Cairo-Regular.ttf) format("ttf");
+  src: url(assets/fonts/Cairo-Regular.ttf) format("truetype");
 }
 @font-face {
   font-family: Cairo;
   font-weight: 500;
-  src: url(assets/fonts/Cairo-SemiBold.ttf) format("ttf");
+  src: url(assets/fonts/Cairo-SemiBold.ttf) format("truetype");
 }
 
 h1,
@@ -129,7 +129,8 @@ h6 {
   font-family: Cairo;
   color: #414141;
 }
-.menu-icon {
+.menu-icon,
+.primary-icon {
   color: @primary-color;
 }
 
@@ -137,4 +138,11 @@ h6 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 1em;
+}
+
+.h-step {
+  background-color: @primary-color;
+  padding: 0 0.35em;
+  color: white;
+  margin: 0 0.25em;
 }

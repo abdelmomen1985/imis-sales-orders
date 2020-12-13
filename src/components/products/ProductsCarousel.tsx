@@ -42,14 +42,19 @@ export default function ProductsCarousel() {
             ref={carouselRef}
             autoplay
             afterChange={(slide) => {
+              console.log(slide);
               let currentKey;
-              if (carouselRef.current.innerSlider) {
+              if (
+                carouselRef.current?.innerSlider &&
+                carouselRef.current.innerSlider.props?.children
+              ) {
                 currentKey = (carouselRef.current?.innerSlider?.props
                   ?.children as any[])[slide]["key"];
               } else {
-                currentKey = (carouselRef.current?.props?.children as any[])[
-                  slide
-                ]["key"];
+                if (carouselRef.current?.props?.children)
+                  currentKey = (carouselRef.current?.props?.children as any[])[
+                    slide
+                  ]["key"];
               }
 
               setCurrentProductGUID(currentKey);

@@ -1,37 +1,38 @@
-import { Avatar, Layout, Button, Menu } from "antd";
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  NotificationFilled,
+  SettingFilled,
+} from "@ant-design/icons";
+import { Avatar, Button, Col, Layout, Row } from "antd";
 import Title from "antd/lib/typography/Title";
 import React, { useContext, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
+  Link,
   Redirect,
   Route,
-  Link,
 } from "react-router-dom";
 import { AnimatedSwitch, spring } from "react-router-transition";
 import { CSSTransition } from "react-transition-group";
 import logo from "./assets/images/alaqeel-logo.png";
 import logoCircle from "./assets/images/circle-logo.png";
+import PagesHeader from "./components/PagesHeader";
+import SideMenu from "./components/SideMenu";
 import { AppContext } from "./context/AppContextProvider";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import CartPage from "./views/CartPage";
+import CustomersPage from "./views/CustomersPage";
 import HomePage from "./views/HomePage";
+import InstructionsPage from "./views/InstructionsPage";
 import LoginPage from "./views/LoginPage";
 import PriceOfferCartPage from "./views/PriceOfferCartPage";
 import PriceOffers from "./views/PriceOffers";
 import ProductPage from "./views/ProductPage";
 import SalesOrdersPage from "./views/SalesOrdersPage";
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  HomeFilled,
-  TableOutlined,
-  FileDoneOutlined,
-  ClockCircleOutlined,
-  LogoutOutlined,
-} from "@ant-design/icons";
-import { SalesIcon, CustomersIcon, DrawIcon } from "./components/icons";
-import CustomersPage from "./views/CustomersPage";
+import SalesOrdersTable from "./views/SalesOrdersTable";
+import TimeTrackingPage from "./views/TimeTrackingPage";
 
 function mapStyles(styles: any) {
   return {
@@ -65,14 +66,6 @@ const bounceTransition = {
     opacity: bounce(1),
     scale: bounce(1),
   },
-};
-
-const styles = {
-  menuItemStyle: {
-    textAlign: "right",
-    fontFamily: "Cairo",
-    fontSize: "1.1em",
-  } as React.CSSProperties,
 };
 
 export default function App() {
@@ -154,110 +147,12 @@ export default function App() {
                     </Title>
                   )}
                 </div>
-                <Menu defaultSelectedKeys={["1"]} mode="inline">
-                  <Menu.Item
-                    key="1"
-                    icon={
-                      <HomeFilled
-                        className="menu-icon"
-                        style={{ margin: !collapsed ? "0 10px" : "" }}
-                      />
-                    }
-                    style={styles.menuItemStyle}
-                  >
-                    <Link to="/">الرئيسية</Link>
-                  </Menu.Item>
-                  <Menu.Item
-                    key="2"
-                    icon={
-                      <CustomersIcon
-                        className="menu-icon"
-                        style={{ margin: !collapsed ? "0 10px" : "" }}
-                      />
-                    }
-                    style={styles.menuItemStyle}
-                  >
-                    <Link to="/customers">أدارة العملاء</Link>
-                  </Menu.Item>
-                  <Menu.Item
-                    key="3"
-                    icon={
-                      <SalesIcon
-                        style={{ margin: !collapsed ? "0 10px" : "" }}
-                      />
-                    }
-                    style={styles.menuItemStyle}
-                  >
-                    <Link to="price-offers">أدارة المبيعات</Link>
-                  </Menu.Item>
-                  <Menu.Item
-                    key="4"
-                    icon={
-                      <DrawIcon
-                        className="menu-icon"
-                        style={{ margin: !collapsed ? "0 10px" : "" }}
-                      />
-                    }
-                    style={styles.menuItemStyle}
-                  >
-                    اضافة رسم
-                  </Menu.Item>
-
-                  <Menu.Item
-                    key="5"
-                    icon={
-                      <TableOutlined
-                        className="menu-icon"
-                        style={{ margin: !collapsed ? "0 10px" : "" }}
-                      />
-                    }
-                    style={styles.menuItemStyle}
-                  >
-                    جدول الطلبات
-                  </Menu.Item>
-
-                  <Menu.Item
-                    key="6"
-                    icon={
-                      <FileDoneOutlined
-                        className="menu-icon"
-                        style={{ margin: !collapsed ? "0 10px" : "" }}
-                      />
-                    }
-                    style={styles.menuItemStyle}
-                  >
-                    تعليمات
-                  </Menu.Item>
-
-                  <Menu.Item
-                    key="7"
-                    icon={
-                      <ClockCircleOutlined
-                        className="menu-icon"
-                        style={{ margin: !collapsed ? "0 10px" : "" }}
-                      />
-                    }
-                    style={styles.menuItemStyle}
-                  >
-                    تتبع الوقت
-                  </Menu.Item>
-
-                  <Menu.Item
-                    key="8"
-                    icon={
-                      <LogoutOutlined
-                        className="menu-icon"
-                        style={{ margin: !collapsed ? "0 10px" : "" }}
-                      />
-                    }
-                    onClick={() => {
-                      setLoggedInUser(null);
-                    }}
-                    style={styles.menuItemStyle}
-                  >
-                    تسجيل الخروج
-                  </Menu.Item>
-                </Menu>
+                <SideMenu
+                  onLogout={() => {
+                    setLoggedInUser(null);
+                  }}
+                  collapsed={collapsed}
+                />
               </div>
             </Layout.Sider>
           )}
@@ -275,31 +170,61 @@ export default function App() {
               </Layout.Header>
             )}
             <Layout.Content className="layout-content">
-              <AnimatedSwitch
-                atEnter={bounceTransition.atEnter}
-                atLeave={bounceTransition.atLeave}
-                atActive={bounceTransition.atActive}
-                mapStyles={mapStyles}
-                className="route-wrapper"
+              <Row style={{ margin: "1em 0" }}>
+                <Col span={18}>
+                  <PagesHeader />
+                </Col>
+                <Col span={6}>
+                  <NotificationFilled
+                    className="primary-icon"
+                    style={{ fontSize: "1.4em", margin: ".25em" }}
+                  />
+                  <SettingFilled
+                    className="primary-icon"
+                    style={{ fontSize: "1.4em", margin: ".25em" }}
+                  />
+                </Col>
+              </Row>
+              <div
+                style={{
+                  backgroundColor: "white",
+                  padding: "1em",
+                  marginTop: ".5em",
+                }}
               >
-                <Route path="/" exact>
-                  {isLoggedIn ? (
-                    <Redirect to="home" />
-                  ) : (
-                    <Redirect to="login" />
-                  )}
-                </Route>
-                <Route path="/home">
-                  {isLoggedIn ? <HomePage /> : <Redirect to="login" />}
-                </Route>
-                <Route path="/product/:guid/:sosq" component={ProductPage} />
-                <Route path="/cart" component={CartPage} />
-                <Route path="/po-cart" component={PriceOfferCartPage} />
-                <Route path="/price-offers" component={PriceOffers} />
-                <Route path="/sales-orders" component={SalesOrdersPage} />
-                <Route path="/login" component={LoginPage} />
-                <Route path="/customers" component={CustomersPage} />
-              </AnimatedSwitch>
+                <AnimatedSwitch
+                  atEnter={bounceTransition.atEnter}
+                  atLeave={bounceTransition.atLeave}
+                  atActive={bounceTransition.atActive}
+                  mapStyles={mapStyles}
+                  className="route-wrapper"
+                >
+                  <Route path="/" exact>
+                    {isLoggedIn ? (
+                      <Redirect to="home" />
+                    ) : (
+                      <Redirect to="login" />
+                    )}
+                  </Route>
+                  <Route path="/home">
+                    {isLoggedIn ? <HomePage /> : <Redirect to="login" />}
+                  </Route>
+                  <Route path="/product/:guid/:sosq" component={ProductPage} />
+                  <Route path="/cart" component={CartPage} />
+                  <Route path="/po-cart" component={PriceOfferCartPage} />
+                  <Route path="/price-offers" component={PriceOffers} />
+                  <Route path="/sales-orders" component={SalesOrdersPage} />
+                  <Route
+                    path="/sales-orders-table"
+                    component={SalesOrdersTable}
+                  />
+                  <Route path="/instructions" component={InstructionsPage} />
+                  <Route path="/time-tracking" component={TimeTrackingPage} />
+
+                  <Route path="/login" component={LoginPage} />
+                  <Route path="/customers" component={CustomersPage} />
+                </AnimatedSwitch>
+              </div>
             </Layout.Content>
             <Layout.Footer>
               <Footer />
